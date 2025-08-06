@@ -89,7 +89,7 @@ const Navlink = () => {
           <li className="pt-2 md:pt-0">
             <Link
               href="/signin"
-              className="py-2.5 bg-orange-400 text-white hover:bg-orange-500 rounded-sm"
+              className="py-2.5 bg-orange-400 text-white px-2 hover:bg-orange-500 rounded-sm"
             >
               Signin
             </Link>
