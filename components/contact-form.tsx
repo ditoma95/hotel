@@ -1,10 +1,11 @@
 "use client";
 
 import { ContactMessage } from "@/lib/actions";
+import clsx from "clsx";
 import { useActionState } from "react";
 
 const ContactForm = () => {
-  const [state, formAction] = useActionState(ContactMessage, null);
+  const [state, formAction, isPending] = useActionState(ContactMessage, null);
 
   return (
     <div className="bg-white p-8 rounded-sm shadow-sm">
@@ -71,10 +72,16 @@ const ContactForm = () => {
         </div>
 
         <button
+          disabled={isPending}
           type="submit"
-          className="px-10 py-4 text-center font-semibold text-white w-full bg-orange-400 rounded-sm hover:bg-orange-500 cursor-pointer"
+          className={clsx(
+            "px-10 py-4 text-center font-semibold text-white w-full bg-orange-400 rounded-sm hover:bg-orange-500 cursor-pointer",
+            {
+              "opacity-50 cursor-progress animate-pulse" : isPending
+            }
+          )}
         >
-          Send Message
+          {isPending ? "Loading ....": "Send Message"}
         </button>
       </form>
     </div>
