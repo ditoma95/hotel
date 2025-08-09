@@ -1,14 +1,41 @@
 "use client";
 
+
 import clsx from "clsx";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+
 import Link from "next/link";
 import { useState } from "react";
 import { IoClose, IoMenu } from "react-icons/io5";
 
 const Navlink = () => {
   const [open, setopen] = useState(false);
+  const { data: session } = useSession();
+
   return (
     <>
+    {session?.user? (
+      <div className="flex items-center justify-end md:order-2">
+        <div className="hidden text-sm bg-gray-50 border rounded-full md:me-0 md:block focus-ring-4 focus:ring-gray-300">
+          <Image 
+            className="size-8 rounded-full"
+            src={session.user.image || "avatar.svg"} 
+            width={64} 
+            height={64} 
+            alt="avatar" 
+          />
+        </div>
+
+        <div className="flex items-center">
+          <button
+            onClick={()=>signOut()}
+           className="md:block hidden py-2 px-4 bg-gray-50 text-gray-700 hover:bg-gray-100 rounded-sm cursor-pointer">
+            sign out
+          </button>
+        </div>
+      </div>
+    ):null}
       <button
         onClick={() => setopen(!open)}
         className="inline-flex items-center p-2 justify-center text-center text-sm text-gray-500
@@ -24,8 +51,7 @@ const Navlink = () => {
       >
         <ul
           className="flex flex-col font-semibold text-sm uppercase p-4 mt-4 rounded-sm bg-gray-50 md:flex-row md:items-center md:space-x-10 md:p-0 
-            md:border-0 md:bg-white"
-        >
+            md:border-0 md:bg-white">
           <li>
             <Link
               href="/"
@@ -59,7 +85,9 @@ const Navlink = () => {
             </Link>
           </li>
 
-          <li>
+          {session && (
+            <>
+              <li>
             <Link
               href="/myreservation"
               className="block py-2 px-3 text-gray-800 hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0"
@@ -68,7 +96,9 @@ const Navlink = () => {
             </Link>
           </li>
 
-          <li>
+          {session.user.role === "admin" && (
+            <>
+            <li>
             <Link
               href="/admin/dashbaord"
               className="block py-2 px-3 text-gray-800 hover:bg-gray-100 rounded-sm md:hover:bg-transparent md:p-0"
@@ -85,8 +115,22 @@ const Navlink = () => {
               Manage Room
             </Link>
           </li>
+            </>
+          )}
+            </>
+          )}
 
-          <li className="pt-2 md:pt-0">
+          {session ? (
+            <li className="pt-2 md:pt-0">
+            <button
+            onClick={()=>signOut()}
+              className="md:hidden py-2.5 bg-red-400 text-white cursor-pointer px-2 hover:bg-orange-500 rounded-sm"
+            >
+              Sign Out
+            </button>
+          </li>
+          ):(
+            <li className="pt-2 md:pt-0">
             <Link
               href="/signin"
               className="py-2.5 bg-orange-400 text-white px-2 hover:bg-orange-500 rounded-sm"
@@ -94,6 +138,8 @@ const Navlink = () => {
               Signin
             </Link>
           </li>
+          )}
+
         </ul>
       </div>
     </>
