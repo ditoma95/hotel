@@ -1,3 +1,4 @@
+import ContactForm from "@/components/contact-form"
 import HeaderSection from "@/components/header-section"
 import { Metadata } from "next"
 import { IoCallOutline, IoLocationOutline, IoMailOutline } from "react-icons/io5"
@@ -51,10 +52,13 @@ const ContactPage = () => {
                                 <p>Togo - Lome Rue 42 DEV 78</p>
                             </div>
                         </li>
-
-
                     </ul>
                 </div>
+
+                {/* contact form  */}
+
+                <ContactForm />
+
             </div>
         </div>
     </div>
